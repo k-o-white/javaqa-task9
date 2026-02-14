@@ -6,24 +6,24 @@ public class RadioTest {
 
     @Test
     public void shouldSetStationByValidNumber() {
-        Radio radio = new Radio();
+        Radio radio = new Radio(20);
+        radio.setStationByNumber(12);
+        int expected = 12;
+        Assertions.assertEquals(expected, radio.getCurrentStation());
+    }
+
+    @Test
+    public void shouldNotSetStationByNumberMoreThanLastStation() {
+        Radio radio = new Radio(20);
         radio.setStationByNumber(5);
+        radio.setStationByNumber(20);
         int expected = 5;
         Assertions.assertEquals(expected, radio.getCurrentStation());
     }
 
     @Test
-    public void shouldNotSetStationByNumberMoreThan9() {
-        Radio radio = new Radio();
-        radio.setStationByNumber(0);
-        radio.setStationByNumber(11);
-        int expected = 0;
-        Assertions.assertEquals(expected, radio.getCurrentStation());
-    }
-
-    @Test
     public void shouldNotSetStationByNumberLessThan0() {
-        Radio radio = new Radio();
+        Radio radio = new Radio(20);
         radio.setStationByNumber(0);
         radio.setStationByNumber(-1);
         int expected = 0;
@@ -32,26 +32,26 @@ public class RadioTest {
 
     @Test
     public void shouldSetPreviousStationIfIt0() {
-        Radio radio = new Radio();
+        Radio radio = new Radio(20);
         radio.setStationByNumber(0);
         radio.setPreviousStation();
-        int expected = 9;
+        int expected = radio.getLastStation();
         Assertions.assertEquals(expected, radio.getCurrentStation());
     }
 
     @Test
     public void shouldSetPreviousStationIfItsInTheMiddle() {
-        Radio radio = new Radio();
-        radio.setStationByNumber(3);
+        Radio radio = new Radio(20);
+        radio.setStationByNumber(12);
         radio.setPreviousStation();
-        int expected = 2;
+        int expected = 11;
         Assertions.assertEquals(expected, radio.getCurrentStation());
     }
 
     @Test
-    public void shouldSetNextStationIfIt9() {
-        Radio radio = new Radio();
-        radio.setStationByNumber(9);
+    public void shouldSetNextStationIfItsLastStation() {
+        Radio radio = new Radio(20);
+        radio.setStationByNumber(radio.getLastStation());
         radio.setNextStation();
         int expected = 0;
         Assertions.assertEquals(expected, radio.getCurrentStation());
@@ -59,7 +59,7 @@ public class RadioTest {
 
     @Test
     public void shouldSetNextStationIfItsInTheMiddle() {
-        Radio radio = new Radio();
+        Radio radio = new Radio(20);
         radio.setStationByNumber(5);
         radio.setNextStation();
         int expected = 6;
